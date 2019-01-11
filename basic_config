@@ -1,7 +1,6 @@
 #!/bin/bash
 
-#Bash prompt configuration:
-
+#Color root promt:
 if [ "$(id -u)" -eq "0"]
 then
   echo "#" >> ~/.bashrc

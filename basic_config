@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#Color root prompt:
+#Colors prompt for root and no-root users:
 if [ "$(id -u)" -eq "0"]
 then
   echo "#" >> ~/.bashrc

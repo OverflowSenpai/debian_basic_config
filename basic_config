@@ -1,11 +1,62 @@
 #!/bin/bash
 
-#Colors prompt for root and no-root users:
-if [ "$(id -u)" -eq "0" ]; then
-  echo "#" >> ~/.bashrc
-  echo "force_color_prompt=yes" >> ~/.bashrc
-  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
+printf "==================================================\n"
+printf "Debian Basic paket installation & configuration!\n"
+printf "==================================================\n"
+
+print "Do you want to start? [y/n]: "
+read CHAR_DESISSION
+
+if ["$(id -u)" -eq "0"]; then
+  if [$CHAR_DESISSION -eq "y"]; then
+    printf "Updating Repositories ..."
+    apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
+
+    printf "Installing basic packets ..."
+    apt install -qq apt-transport-https > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt install -qq ca-certificates > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt install -qq curl > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt install -qq htop > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt install -qq net-tools > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt install -qq open-ssh-server > /var/log/script_stdout.log 2> /var/log/script_error.log &
+
+    printf "Configuring SSH-Server ..."
+    printf "Which port do you want to use? [1025-65535]: "
+    read INT_SSHPORT
+
+    while [ $INT_SSHPORT -gt 65535 ] || [ $INT_SSHPORT -lt 1025 ]; do
+      printf "Port not in Range [1025-65535]!"
+      printf "Which port do you want to use? [1025-65535]: "
+      read INT_SSHPORT
+    done
+
+    if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
+      echo -e "\n\n=======================\nCustom Config\n=======================\n" >> /etc/ssh/sshd_config
+      echo -e "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
+      echo -e "LoginGracetime 30" >> /etc/ssh/sshd_config
+      echo -e "PermitRootLogin no" >> /etc/ssh/sshd_config
+      echo -e "StrictModes yes" >> /etc/ssh/sshd_config
+      echo -e "MaxAuthTries 3" >> /etc/ssh/sshd_config
+      echo -e "MaxSessions 3" >> /etc/ssh/sshd_config
+    fi
+
+
+    printf "Setting up SSH-Server ..."
+
+    printf "Coloring prompt ..."
+    if [ "$(id -u)" -eq "0" ]; then
+      echo "#" >> ~/.bashrc
+      echo "force_color_prompt=yes" >> ~/.bashrc
+      echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
+    else
+      echo "#" >> ~/.bashrc
+      echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
+    fi
+  fi
+
+  if [$CHAR_DESISSION -eq "n"]; then
+    printf "OK! See you soon :)\n"
+  fi
 else
-  echo "#" >> ~/.bashrc
-  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
+  printf "\nSorry! For the rest you must be god to run this!\n"
 fi

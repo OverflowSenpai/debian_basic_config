@@ -1,8 +1,8 @@
 #!/bin/bash
 
-printf "==================================================\n"
-printf "Debian Basic paket installation & configuration!\n"
-printf "==================================================\n"
+#==================================================
+#========== Debian default conf - Setup ===========
+#==================================================
 
 print "Do you want to start? [y/n]: "
 read CHAR_DESISSION
@@ -10,32 +10,42 @@ read CHAR_DESISSION
 if [$CHAR_DESISSION -eq "y"]; then
   if ["$(id -u)" -eq "0"]; then
     printf "Modify .bashrc for root user ..."
-    echo "\n\n" >> ~/.bashrc
-    echo "====================\nCustom Config\n===================\n" >> ~/.bashrc
-    echo "force_color_prompt=yes" >> ~/.bashrc
-    echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
-    echo "HISTSIZE=1000" >> ~/.bashrc
-    echo "HISTFILESIZE=2000" >> ~/.bashrc
-    echo "shopt -s histappend" >> ~/.bashrc
-    echo "shopt -s checkwinsize" >> ~/.bashrc
-    echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
-    echo "export OPTIONS='--color=auto'" >> ~/.bashrc
-    echo "eval \"`dircolors`\"" >> ~/.bashrc
-    echo "alias ls='ls $OPTIONS'" >> ~/.bashrc
-    echo "alias grep='grep $OPTIONS'" >> ~/.bashrc
+    bashrc_root
 
     printf "Updating Repositories ..."
     apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
 
     printf "Installing basic packets ..."
-    apt install -qq apt-transport-https > /var/log/script_stdout.log 2> /var/log/script_error.log &
-    apt install -qq ca-certificates > /var/log/script_stdout.log 2> /var/log/script_error.log &
-    apt install -qq curl > /var/log/script_stdout.log 2> /var/log/script_error.log &
-    apt install -qq htop > /var/log/script_stdout.log 2> /var/log/script_error.log &
-    apt install -qq net-tools > /var/log/script_stdout.log 2> /var/log/script_error.log &
-    apt install -qq open-ssh-server > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    paket_installation
 
     printf "Configuring SSH-Server ..."
+    ssh_server_config
+
+  else
+    printf "Modify .bashrc for non-root user ..."
+    bashrc_nonroot
+
+  fi
+  printf "DONE!"
+
+else
+  printf "OK! See you soon :)\n"
+
+fi
+
+#========================
+#====== Functions =======
+#========================
+paket_installation () {
+  apt install -qq apt-transport-https > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install -qq ca-certificates > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install -qq curl > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install -qq htop > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install -qq net-tools > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install -qq open-ssh-server > /var/log/script_stdout.log 2> /var/log/script_error.log &
+}
+
+ssh_server_config () {
     printf "Which port do you want to use? [1025-65535]: "
     read INT_SSHPORT
 
@@ -55,13 +65,42 @@ if [$CHAR_DESISSION -eq "y"]; then
       echo -e "MaxAuthTries 3" >> /etc/ssh/sshd_config
       echo -e "MaxSessions 3" >> /etc/ssh/sshd_config
     fi
+}
 
-  else
-    printf "Coloring prompt for non-root users ..."
-    echo "\n\n" >> ~/.bashrc
-    echo "====================\nCustom Config\n===================\n" >> ~/.bashrc
-    echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
-  fi
-else
-  printf "OK! See you soon :)\n"
-fi
+bashrc_root () {
+  rm -f ~/.bashrc
+  touch ~/.bashrc
+  echo "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
+  echo "force_color_prompt=yes" >> ~/.bashrc
+  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo "HISTSIZE=500" >> ~/.bashrc
+  echo "HISTFILESIZE=1000" >> ~/.bashrc
+  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo "shopt -s checkwinsize" >> ~/.bashrc
+  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo "alias h='history'" >> ~/.bashrc
+  echo "alias hc='history -c'" >> ~/.bashrc
+  echo "alias ..='cd ..'" >> ~/.bashrc
+}
+
+bashrc_nonroot () {
+  rm -f ~/.bashrc
+  touch ~/.bashrc
+  echo "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
+  echo "force_color_prompt=yes" >> ~/.bashrc
+  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo "HISTSIZE=500" >> ~/.bashrc
+  echo "HISTFILESIZE=1000" >> ~/.bashrc
+  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo "shopt -s checkwinsize" >> ~/.bashrc
+  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo "alias h='history'" >> ~/.bashrc
+  echo "alias hc='history -c'" >> ~/.bashrc
+  echo "alias ..='cd ..'" >> ~/.bashrc
+}

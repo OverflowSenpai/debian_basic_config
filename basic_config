@@ -7,8 +7,23 @@ printf "==================================================\n"
 print "Do you want to start? [y/n]: "
 read CHAR_DESISSION
 
-if ["$(id -u)" -eq "0"]; then
-  if [$CHAR_DESISSION -eq "y"]; then
+if [$CHAR_DESISSION -eq "y"]; then
+  if ["$(id -u)" -eq "0"]; then
+    printf "Modify .bashrc for root user ..."
+    echo "\n\n" >> ~/.bashrc
+    echo "====================\nCustom Config\n===================\n" >> ~/.bashrc
+    echo "force_color_prompt=yes" >> ~/.bashrc
+    echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
+    echo "HISTSIZE=1000" >> ~/.bashrc
+    echo "HISTFILESIZE=2000" >> ~/.bashrc
+    echo "shopt -s histappend" >> ~/.bashrc
+    echo "shopt -s checkwinsize" >> ~/.bashrc
+    echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
+    echo "export OPTIONS='--color=auto'" >> ~/.bashrc
+    echo "eval \"`dircolors`\"" >> ~/.bashrc
+    echo "alias ls='ls $OPTIONS'" >> ~/.bashrc
+    echo "alias grep='grep $OPTIONS'" >> ~/.bashrc
+
     printf "Updating Repositories ..."
     apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
 
@@ -30,6 +45,7 @@ if ["$(id -u)" -eq "0"]; then
       read INT_SSHPORT
     done
 
+    printf "Setting up SSH-Server ..."
     if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
       echo -e "\n\n=======================\nCustom Config\n=======================\n" >> /etc/ssh/sshd_config
       echo -e "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
@@ -40,23 +56,12 @@ if ["$(id -u)" -eq "0"]; then
       echo -e "MaxSessions 3" >> /etc/ssh/sshd_config
     fi
 
-
-    printf "Setting up SSH-Server ..."
-
-    printf "Coloring prompt ..."
-    if [ "$(id -u)" -eq "0" ]; then
-      echo "#" >> ~/.bashrc
-      echo "force_color_prompt=yes" >> ~/.bashrc
-      echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
-    else
-      echo "#" >> ~/.bashrc
-      echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
-    fi
-  fi
-
-  if [$CHAR_DESISSION -eq "n"]; then
-    printf "OK! See you soon :)\n"
+  else
+    printf "Coloring prompt for non-root users ..."
+    echo "\n\n" >> ~/.bashrc
+    echo "====================\nCustom Config\n===================\n" >> ~/.bashrc
+    echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;92m\]'" >> ~/.bashrc
   fi
 else
-  printf "\nSorry! For the rest you must be god to run this!\n"
+  printf "OK! See you soon :)\n"
 fi

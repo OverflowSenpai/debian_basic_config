@@ -45,8 +45,8 @@ if [$CHAR_DESISSION -eq "y"]; then
       read INT_SSHPORT
     done
 
-    printf "Setting up SSH-Server ..."
     if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
+      printf "Setting up SSH-Server ..."
       echo -e "\n\n=======================\nCustom Config\n=======================\n" >> /etc/ssh/sshd_config
       echo -e "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
       echo -e "LoginGracetime 30" >> /etc/ssh/sshd_config

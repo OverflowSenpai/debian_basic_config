@@ -59,7 +59,7 @@ timezone_config () {
 bashrc_root () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo -e "#=====================\n#Custom .bashrc Config\n#=====================\n" >> ~/.bashrc
+  echo -e "#==========================\n#Custom .bashrc for root\n#==========================\n" >> ~/.bashrc
   echo "force_color_prompt=yes" >> ~/.bashrc
   echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
   echo "HISTSIZE=500" >> ~/.bashrc
@@ -78,7 +78,7 @@ bashrc_root () {
 bashrc_nonroot () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo -e "#=====================\n#Custom .bashrc Config\n#=====================\n" >> ~/.bashrc
+  echo -e "#==========================\n#Custom .bashrc for non-root\n#==========================\n" >> ~/.bashrc
   echo "force_color_prompt=yes" >> ~/.bashrc
   echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
   echo "HISTSIZE=500" >> ~/.bashrc

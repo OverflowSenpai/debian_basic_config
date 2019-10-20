@@ -22,9 +22,9 @@ paket_installation () {
 
 ssh_server_config () {
     printf "${YELLOW}Do you want to configure the SSH Server? [y/n]:${NC} "
-    read CHAR_DESISSION_2
+    read CHAR_DESISSION_SSHSERVER
 
-    if [ $CHAR_DESISSION_2 == "y" ]; then
+    if [ $CHAR_DESISSION_SSHSERVER == "y" ]; then
       printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
       read INT_SSHPORT
 
@@ -45,6 +45,15 @@ ssh_server_config () {
         echo "MaxSessions 3" >> /etc/ssh/sshd_config
       fi
     fi
+}
+
+timezone_config () {
+  printf "${YELLOW}Do you want to change your Timezone? [y/n]:${NC} "
+  read CHAR_DESISSION_TIMEZONE
+
+  if [ $CHAR_DESISSION_TIMEZONE == "y" ]; then
+    dpkg-reconfigure tzdata
+  fi
 }
 
 bashrc_root () {
@@ -90,21 +99,21 @@ bashrc_nonroot () {
 #==================================================
 
 printf "\n${YELLOW}Do you want to start? [y/n]:${NC} "
-read CHAR_DESISSION_1
+read CHAR_DESISSION_STARTSCRIPT
 
-if [ $CHAR_DESISSION_1 == "y" ]; then
+if [ $CHAR_DESISSION_STARTSCRIPT == "y" ]; then
   if [ "$(id -u)" -eq "0" ]; then
     printf "${GREEN}Modify .bashrc for root user ...${NC}\n"
     bashrc_root
 
     printf "${GREEN}Updating Repositories ...${NC}\n"
-    apt update > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+    apt update
 
     printf "${GREEN}Installing basic packets ...${NC}\n"
     paket_installation
 
-    printf "${GREEN}Setting Timezone to Europe/Berlin ...${NC}\n"
-    timedatectl set-timezone Europe/Berlin
+    printf "${GREEN}Changeing Timezone ...${NC}\n"
+    timezone_config
 
     printf "${GREEN}Configuring SSH-Server ...${NC}\n"
     ssh_server_config

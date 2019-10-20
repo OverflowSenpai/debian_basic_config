@@ -112,7 +112,7 @@ if [ $CHAR_DESISSION_STARTSCRIPT == "y" ]; then
     printf "${GREEN}Installing basic packets ...${NC}\n"
     paket_installation
 
-    printf "${GREEN}Changeing Timezone ...${NC}\n"
+    printf "${GREEN}Configuring Timezone ...${NC}\n"
     timezone_config
 
     printf "${GREEN}Configuring SSH-Server ...${NC}\n"

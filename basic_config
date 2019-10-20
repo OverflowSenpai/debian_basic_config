@@ -12,12 +12,12 @@ NC='\033[0m'
 #====== Functions =======
 #========================
 paket_installation () {
-  apt install apt-transport-https -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
-  apt install ca-certificates -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
-  apt install curl -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
-  apt install htop -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
-  apt install net-tools -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
-  apt install open-ssh-server -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install apt-transport-https -y
+  apt install ca-certificates -y
+  apt install curl -y
+  apt install htop -y
+  apt install net-tools -y
+  apt install open-ssh-server -y
 }
 
 ssh_server_config () {

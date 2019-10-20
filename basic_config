@@ -98,6 +98,9 @@ if [ $CHAR_DESISSION == "y" ]; then
     printf "${GREEN}Installing basic packets ...${NC}\n"
     paket_installation
 
+    printf "${GREEN}Setting Timezone to Europe/Berlin ...${NC}\n"
+    timedatectl set-timezone Europe/Berlin
+
     printf "${GREEN}Configuring SSH-Server ...${NC}\n"
     ssh_server_config
 

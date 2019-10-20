@@ -17,7 +17,7 @@ paket_installation () {
   apt install curl -y
   apt install htop -y
   apt install net-tools -y
-  apt install open-ssh-server -y
+  apt install openssh-server -y
 }
 
 ssh_server_config () {
@@ -52,7 +52,7 @@ bashrc_root () {
   echo "HISTFILESIZE=1000" >> ~/.bashrc
   echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
   echo "shopt -s checkwinsize" >> ~/.bashrc
-  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
   echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
   echo "alias grep='grep --color=auto'" >> ~/.bashrc
   echo "alias mkdir='mkdir -p'" >> ~/.bashrc

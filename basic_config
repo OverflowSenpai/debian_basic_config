@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#===============================
+#====== Var declarations =======
+#===============================
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
+GREEN='\033[0;32m'
+NC='\033[0m'
+
 #========================
 #====== Functions =======
 #========================
@@ -13,17 +21,17 @@ paket_installation () {
 }
 
 ssh_server_config () {
-    printf "Which port do you want to use? [1025-65535]: "
+    printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
     read INT_SSHPORT
 
     while [ $INT_SSHPORT -gt 65535 ] || [ $INT_SSHPORT -lt 1025 ]; do
-      printf "Port not in Range [1025-65535]!\n"
-      printf "Which port do you want to use? [1025-65535]: "
+      printf "${RED}Port not in Range [1025-65535]!${NC}\n"
+      printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
       read INT_SSHPORT
     done
 
     if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
-      printf "Setting up SSH-Server ...\n"
+      printf "${GREEN}Setting up SSH-Server ...${NC}\n"
       echo -e "\n\n#=======================\n#Custom Config\n#=======================\n" >> /etc/ssh/sshd_config
       echo "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
       echo "LoginGracetime 30" >> /etc/ssh/sshd_config
@@ -76,31 +84,31 @@ bashrc_nonroot () {
 #========== Debian default conf - Setup ===========
 #==================================================
 
-printf "Do you want to start? [y/n]: "
+printf "\n${YELLOW}Do you want to start? [y/n]:${NC} "
 read CHAR_DESISSION
 
 if [ $CHAR_DESISSION == "y" ]; then
   if [ "$(id -u)" -eq "0" ]; then
-    printf "Modify .bashrc for root user ...\n"
+    printf "${GREEN}Modify .bashrc for root user ...${NC}\n"
     bashrc_root
 
-    printf "Updating Repositories ...\n"
+    printf "${GREEN}Updating Repositories ...${NC}\n"
     apt update > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
 
-    printf "Installing basic packets ...\n"
+    printf "${GREEN}Installing basic packets ...${NC}\n"
     paket_installation
 
-    printf "Configuring SSH-Server ...\n"
+    printf "${GREEN}Configuring SSH-Server ...${NC}\n"
     ssh_server_config
 
   else
-    printf "Modify .bashrc for non-root user ...\n"
+    printf "${GREEN}Modify .bashrc for non-root user ...${NC}\n"
     bashrc_nonroot
 
   fi
-  printf "DONE!\n"
+  printf "${GREEN}DONE!${NC}\n"
 
 else
-  printf "OK! See you soon :)\n"
+  printf "${GREEN}OK! See you soon :)${NC}\n\n"
 
 fi

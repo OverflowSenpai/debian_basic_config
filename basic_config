@@ -4,12 +4,12 @@
 #====== Functions =======
 #========================
 paket_installation () {
-  apt install -qq apt-transport-https > /var/log/script_stdout.log 2> /var/log/script_error.log &
-  apt install -qq ca-certificates > /var/log/script_stdout.log 2> /var/log/script_error.log &
-  apt install -qq curl > /var/log/script_stdout.log 2> /var/log/script_error.log &
-  apt install -qq htop > /var/log/script_stdout.log 2> /var/log/script_error.log &
-  apt install -qq net-tools > /var/log/script_stdout.log 2> /var/log/script_error.log &
-  apt install -qq open-ssh-server > /var/log/script_stdout.log 2> /var/log/script_error.log &
+  apt install apt-transport-https -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install ca-certificates -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install curl -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install htop -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install net-tools -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
+  apt install open-ssh-server -y > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
 }
 
 ssh_server_config () {
@@ -24,52 +24,52 @@ ssh_server_config () {
 
     if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
       printf "Setting up SSH-Server ..."
-      echo -e "\n\n=======================\nCustom Config\n=======================\n" >> /etc/ssh/sshd_config
-      echo -e "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
-      echo -e "LoginGracetime 30" >> /etc/ssh/sshd_config
-      echo -e "PermitRootLogin no" >> /etc/ssh/sshd_config
-      echo -e "StrictModes yes" >> /etc/ssh/sshd_config
-      echo -e "MaxAuthTries 3" >> /etc/ssh/sshd_config
-      echo -e "MaxSessions 3" >> /etc/ssh/sshd_config
+      echo -e "\n\n#=======================\n#Custom Config\n#=======================\n" >> /etc/ssh/sshd_config
+      echo "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
+      echo "LoginGracetime 30" >> /etc/ssh/sshd_config
+      echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+      echo "StrictModes yes" >> /etc/ssh/sshd_config
+      echo "MaxAuthTries 3" >> /etc/ssh/sshd_config
+      echo "MaxSessions 3" >> /etc/ssh/sshd_config
     fi
 }
 
 bashrc_root () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo -e "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
-  echo -e "force_color_prompt=yes" >> ~/.bashrc
-  echo -e "HISTCONTROL=ignoreboth" >> ~/.bashrc
-  echo -e "HISTSIZE=500" >> ~/.bashrc
-  echo -e "HISTFILESIZE=1000" >> ~/.bashrc
-  echo -e "shopt -s histappend histreedit histverify" >> ~/.bashrc
-  echo -e "shopt -s checkwinsize" >> ~/.bashrc
-  echo -e "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
-  echo -e "alias ls='ls -h --color=auto'" >> ~/.bashrc
-  echo -e "alias grep='grep --color=auto'" >> ~/.bashrc
-  echo -e "alias mkdir='mkdir -p'" >> ~/.bashrc
-  echo -e "alias h='history'" >> ~/.bashrc
-  echo -e "alias hc='history -c'" >> ~/.bashrc
-  echo -e "alias ..='cd ..'" >> ~/.bashrc
+  echo -e "#=====================\n#Custom .bashrc Config\n#=====================\n" >> ~/.bashrc
+  echo "force_color_prompt=yes" >> ~/.bashrc
+  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo "HISTSIZE=500" >> ~/.bashrc
+  echo "HISTFILESIZE=1000" >> ~/.bashrc
+  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo "shopt -s checkwinsize" >> ~/.bashrc
+  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo "alias h='history'" >> ~/.bashrc
+  echo "alias hc='history -c'" >> ~/.bashrc
+  echo "alias ..='cd ..'" >> ~/.bashrc
 }
 
 bashrc_nonroot () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo -e "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
-  echo -e "force_color_prompt=yes" >> ~/.bashrc
-  echo -e "HISTCONTROL=ignoreboth" >> ~/.bashrc
-  echo -e "HISTSIZE=500" >> ~/.bashrc
-  echo -e "HISTFILESIZE=1000" >> ~/.bashrc
-  echo -e "shopt -s histappend histreedit histverify" >> ~/.bashrc
-  echo -e "shopt -s checkwinsize" >> ~/.bashrc
-  echo -e "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
-  echo -e "alias ls='ls -h --color=auto'" >> ~/.bashrc
-  echo -e "alias grep='grep --color=auto'" >> ~/.bashrc
-  echo -e "alias mkdir='mkdir -p'" >> ~/.bashrc
-  echo -e "alias h='history'" >> ~/.bashrc
-  echo -e "alias hc='history -c'" >> ~/.bashrc
-  echo -e "alias ..='cd ..'" >> ~/.bashrc
+  echo -e "#=====================\n#Custom .bashrc Config\n#=====================\n" >> ~/.bashrc
+  echo "force_color_prompt=yes" >> ~/.bashrc
+  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo "HISTSIZE=500" >> ~/.bashrc
+  echo "HISTFILESIZE=1000" >> ~/.bashrc
+  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo "shopt -s checkwinsize" >> ~/.bashrc
+  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo "alias h='history'" >> ~/.bashrc
+  echo "alias hc='history -c'" >> ~/.bashrc
+  echo "alias ..='cd ..'" >> ~/.bashrc
 }
 
 #==================================================
@@ -79,13 +79,13 @@ bashrc_nonroot () {
 printf "Do you want to start? [y/n]: "
 read CHAR_DESISSION
 
-if [$CHAR_DESISSION -eq "y"]; then
-  if ["$(id -u)" -eq "0"]; then
+if [ $CHAR_DESISSION == "y" ]; then
+  if [ "$(id -u)" -eq "0" ]; then
     printf "Modify .bashrc for root user ...\n"
     bashrc_root
 
     printf "Updating Repositories ...\n"
-    apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
+    apt update > /var/log/script_stdout.log 2> /var/log/script_error.log &> dev/null
 
     printf "Installing basic packets ...\n"
     paket_installation

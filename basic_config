@@ -35,7 +35,6 @@ ssh_server_config () {
       done
 
       if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
-        printf "${GREEN}Setting up SSH-Server ...${NC}\n"
         echo -e "\n\n#=======================\n#Custom Config\n#=======================\n" >> /etc/ssh/sshd_config
         echo "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
         echo "LoginGracetime 30" >> /etc/ssh/sshd_config

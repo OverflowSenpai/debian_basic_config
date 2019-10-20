@@ -102,7 +102,7 @@ read CHAR_DESISSION_STARTSCRIPT
 
 if [ $CHAR_DESISSION_STARTSCRIPT == "y" ]; then
   if [ "$(id -u)" -eq "0" ]; then
-    printf "${GREEN}Modify .bashrc for root user ...${NC}\n"
+    printf "${GREEN}Modifying .bashrc for root user ...${NC}\n"
     bashrc_root
 
     printf "${GREEN}Updating Repositories ...${NC}\n"
@@ -118,7 +118,7 @@ if [ $CHAR_DESISSION_STARTSCRIPT == "y" ]; then
     ssh_server_config
 
   else
-    printf "${GREEN}Modify .bashrc for non-root user ...${NC}\n"
+    printf "${GREEN}Modifying .bashrc for non-root user ...${NC}\n"
     bashrc_nonroot
 
   fi

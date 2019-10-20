@@ -1,38 +1,5 @@
 #!/bin/bash
 
-#==================================================
-#========== Debian default conf - Setup ===========
-#==================================================
-
-print "Do you want to start? [y/n]: "
-read CHAR_DESISSION
-
-if [$CHAR_DESISSION -eq "y"]; then
-  if ["$(id -u)" -eq "0"]; then
-    printf "Modify .bashrc for root user ..."
-    bashrc_root
-
-    printf "Updating Repositories ..."
-    apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
-
-    printf "Installing basic packets ..."
-    paket_installation
-
-    printf "Configuring SSH-Server ..."
-    ssh_server_config
-
-  else
-    printf "Modify .bashrc for non-root user ..."
-    bashrc_nonroot
-
-  fi
-  printf "DONE!"
-
-else
-  printf "OK! See you soon :)\n"
-
-fi
-
 #========================
 #====== Functions =======
 #========================
@@ -50,7 +17,7 @@ ssh_server_config () {
     read INT_SSHPORT
 
     while [ $INT_SSHPORT -gt 65535 ] || [ $INT_SSHPORT -lt 1025 ]; do
-      printf "Port not in Range [1025-65535]!"
+      printf "Port not in Range [1025-65535]!\n"
       printf "Which port do you want to use? [1025-65535]: "
       read INT_SSHPORT
     done
@@ -70,37 +37,70 @@ ssh_server_config () {
 bashrc_root () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
-  echo "force_color_prompt=yes" >> ~/.bashrc
-  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
-  echo "HISTSIZE=500" >> ~/.bashrc
-  echo "HISTFILESIZE=1000" >> ~/.bashrc
-  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
-  echo "shopt -s checkwinsize" >> ~/.bashrc
-  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
-  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
-  echo "alias grep='grep --color=auto'" >> ~/.bashrc
-  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
-  echo "alias h='history'" >> ~/.bashrc
-  echo "alias hc='history -c'" >> ~/.bashrc
-  echo "alias ..='cd ..'" >> ~/.bashrc
+  echo -e "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
+  echo -e "force_color_prompt=yes" >> ~/.bashrc
+  echo -e "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo -e "HISTSIZE=500" >> ~/.bashrc
+  echo -e "HISTFILESIZE=1000" >> ~/.bashrc
+  echo -e "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo -e "shopt -s checkwinsize" >> ~/.bashrc
+  echo -e "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[01;31m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo -e "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo -e "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo -e "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo -e "alias h='history'" >> ~/.bashrc
+  echo -e "alias hc='history -c'" >> ~/.bashrc
+  echo -e "alias ..='cd ..'" >> ~/.bashrc
 }
 
 bashrc_nonroot () {
   rm -f ~/.bashrc
   touch ~/.bashrc
-  echo "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
-  echo "force_color_prompt=yes" >> ~/.bashrc
-  echo "HISTCONTROL=ignoreboth" >> ~/.bashrc
-  echo "HISTSIZE=500" >> ~/.bashrc
-  echo "HISTFILESIZE=1000" >> ~/.bashrc
-  echo "shopt -s histappend histreedit histverify" >> ~/.bashrc
-  echo "shopt -s checkwinsize" >> ~/.bashrc
-  echo "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
-  echo "alias ls='ls -h --color=auto'" >> ~/.bashrc
-  echo "alias grep='grep --color=auto'" >> ~/.bashrc
-  echo "alias mkdir='mkdir -p'" >> ~/.bashrc
-  echo "alias h='history'" >> ~/.bashrc
-  echo "alias hc='history -c'" >> ~/.bashrc
-  echo "alias ..='cd ..'" >> ~/.bashrc
+  echo -e "====================\nCustom .bashrc Config\n===================\n" >> ~/.bashrc
+  echo -e "force_color_prompt=yes" >> ~/.bashrc
+  echo -e "HISTCONTROL=ignoreboth" >> ~/.bashrc
+  echo -e "HISTSIZE=500" >> ~/.bashrc
+  echo -e "HISTFILESIZE=1000" >> ~/.bashrc
+  echo -e "shopt -s histappend histreedit histverify" >> ~/.bashrc
+  echo -e "shopt -s checkwinsize" >> ~/.bashrc
+  echo -e "PS1='\[\033[01;31m\][\[\033[01;33m\]\t\[\033[01;31m\]]─[\[\033[0;92m\]\u\[\033[01;33m\]@\[\033[01;96m\]\h\[\033[01;31m\]]─[\[\033[0;32m\]\w\[\033[01;31m\]]\[\033[38;5;15m\]\n\[\033[01;31m\]\\$\[\033[01;33m\]: \[\033[0;255m\]'" >> ~/.bashrc
+  echo -e "alias ls='ls -h --color=auto'" >> ~/.bashrc
+  echo -e "alias grep='grep --color=auto'" >> ~/.bashrc
+  echo -e "alias mkdir='mkdir -p'" >> ~/.bashrc
+  echo -e "alias h='history'" >> ~/.bashrc
+  echo -e "alias hc='history -c'" >> ~/.bashrc
+  echo -e "alias ..='cd ..'" >> ~/.bashrc
 }
+
+#==================================================
+#========== Debian default conf - Setup ===========
+#==================================================
+
+printf "Do you want to start? [y/n]: "
+read CHAR_DESISSION
+
+if [$CHAR_DESISSION -eq "y"]; then
+  if ["$(id -u)" -eq "0"]; then
+    printf "Modify .bashrc for root user ...\n"
+    bashrc_root
+
+    printf "Updating Repositories ...\n"
+    apt get update > /var/log/script_stdout.log 2> /var/log/script_error.log &
+
+    printf "Installing basic packets ...\n"
+    paket_installation
+
+    printf "Configuring SSH-Server ...\n"
+    ssh_server_config
+
+  else
+    printf "Modify .bashrc for non-root user ...\n"
+    bashrc_nonroot
+
+  fi
+  printf "DONE!\n"
+
+else
+  printf "OK! See you soon :)\n"
+
+fi

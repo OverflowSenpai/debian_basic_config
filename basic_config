@@ -21,24 +21,29 @@ paket_installation () {
 }
 
 ssh_server_config () {
-    printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
-    read INT_SSHPORT
+    printf "${YELLOW}Do you want to configure the SSH Server? [y/n]:${NC} "
+    read CHAR_DESISSION_2
 
-    while [ $INT_SSHPORT -gt 65535 ] || [ $INT_SSHPORT -lt 1025 ]; do
-      printf "${RED}Port not in Range [1025-65535]!${NC}\n"
+    if [ $CHAR_DESISSION_2 == "y" ]; then
       printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
       read INT_SSHPORT
-    done
 
-    if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
-      printf "${GREEN}Setting up SSH-Server ...${NC}\n"
-      echo -e "\n\n#=======================\n#Custom Config\n#=======================\n" >> /etc/ssh/sshd_config
-      echo "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
-      echo "LoginGracetime 30" >> /etc/ssh/sshd_config
-      echo "PermitRootLogin no" >> /etc/ssh/sshd_config
-      echo "StrictModes yes" >> /etc/ssh/sshd_config
-      echo "MaxAuthTries 3" >> /etc/ssh/sshd_config
-      echo "MaxSessions 3" >> /etc/ssh/sshd_config
+      while [ $INT_SSHPORT -gt 65535 ] || [ $INT_SSHPORT -lt 1025 ]; do
+        printf "${RED}Port not in Range [1025-65535]!${NC}\n"
+        printf "${YELLOW}Which port do you want to use? [1025-65535]:${NC} "
+        read INT_SSHPORT
+      done
+
+      if [ $INT_SSHPORT -ge 1025 ] && [ $INT_SSHPORT -le 65535 ]; then
+        printf "${GREEN}Setting up SSH-Server ...${NC}\n"
+        echo -e "\n\n#=======================\n#Custom Config\n#=======================\n" >> /etc/ssh/sshd_config
+        echo "Port $INT_SSHPORT" >> /etc/ssh/sshd_config
+        echo "LoginGracetime 30" >> /etc/ssh/sshd_config
+        echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+        echo "StrictModes yes" >> /etc/ssh/sshd_config
+        echo "MaxAuthTries 3" >> /etc/ssh/sshd_config
+        echo "MaxSessions 3" >> /etc/ssh/sshd_config
+      fi
     fi
 }
 
@@ -85,9 +90,9 @@ bashrc_nonroot () {
 #==================================================
 
 printf "\n${YELLOW}Do you want to start? [y/n]:${NC} "
-read CHAR_DESISSION
+read CHAR_DESISSION_1
 
-if [ $CHAR_DESISSION == "y" ]; then
+if [ $CHAR_DESISSION_1 == "y" ]; then
   if [ "$(id -u)" -eq "0" ]; then
     printf "${GREEN}Modify .bashrc for root user ...${NC}\n"
     bashrc_root

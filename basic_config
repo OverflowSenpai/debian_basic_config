@@ -12,12 +12,12 @@ NC='\033[0m'
 #====== Functions =======
 #========================
 paket_installation () {
-  apt install apt-transport-https -y
-  apt install ca-certificates -y
-  apt install curl -y
-  apt install htop -y
-  apt install net-tools -y
-  apt install openssh-server -y
+  apt install -y  apt-transport-https \
+                  ca-certificates \
+                  curl \
+                  htop \
+                  net-tools \
+                  openssh-server 
 }
 
 ssh_server_config () {
